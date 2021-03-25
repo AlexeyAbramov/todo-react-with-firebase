@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/todo-react-with-firebase/static/css/main.fe257254.chunk.css",
+    "main.js": "/todo-react-with-firebase/static/js/main.93ce5022.chunk.js",
+    "main.js.map": "/todo-react-with-firebase/static/js/main.93ce5022.chunk.js.map",
+    "runtime-main.js": "/todo-react-with-firebase/static/js/runtime-main.13c9c4a4.js",
+    "runtime-main.js.map": "/todo-react-with-firebase/static/js/runtime-main.13c9c4a4.js.map",
+    "static/js/2.9747e9aa.chunk.js": "/todo-react-with-firebase/static/js/2.9747e9aa.chunk.js",
+    "static/js/2.9747e9aa.chunk.js.map": "/todo-react-with-firebase/static/js/2.9747e9aa.chunk.js.map",
+    "index.html": "/todo-react-with-firebase/index.html",
+    "static/css/main.fe257254.chunk.css.map": "/todo-react-with-firebase/static/css/main.fe257254.chunk.css.map",
+    "static/js/2.9747e9aa.chunk.js.LICENSE.txt": "/todo-react-with-firebase/static/js/2.9747e9aa.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.13c9c4a4.js",
+    "static/js/2.9747e9aa.chunk.js",
+    "static/css/main.fe257254.chunk.css",
+    "static/js/main.93ce5022.chunk.js"
+  ]
+}
