@@ -8,7 +8,6 @@ import TodoSide from "../TodoSide";
 import TodoForm from "../TodoForm";
 
 import { getTodoId, shortDate } from "../../helpers";
-import { todos } from "../../todos";
 
 import fireApp from "../../fire";
 
@@ -26,6 +25,7 @@ class App extends React.Component {
       currentEditedTodoByIdx: null,
       isAuth: false,
       errorMessage: "",
+      isLoading: false,
     };
     this.addTodo = this.addTodo.bind(this);
     this.doneTodo = this.doneTodo.bind(this);
@@ -44,19 +44,31 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({ todos });
     fireApp.auth().onAuthStateChanged((user) => {
       if (user) {
-        this.setState({ isAuth: true });
-        console.log(fireApp.auth().currentUser.uid);
-        let db = fireApp.database();
-        db.ref(`users/`).set({
-          name: "gg",
+        this.setState({ isAuth: true, email: user.email, isLoading: true });
+        const userUid = fireApp.auth().currentUser.uid;
+        const dbRef = fireApp.database().ref(`users/${userUid}/todos`);
+        dbRef.once("value").then((snapshot) => {
+          if (snapshot.exists()) {
+            let todos = [];
+            snapshot.forEach((i) => {
+              let item = i.val();
+              todos.push(item);
+            });
+            this.setState({ todos, isLoading: false });
+          } else {
+            this.setState({ isLoading: false });
+          }
         });
-        db.ref("users/")
-          .get()
-          .then((response) => console.log(response));
       }
+    });
+  }
+  pushTodosToFirebase() {
+    let userUid = fireApp.auth().currentUser.uid;
+    let db = fireApp.database();
+    db.ref(`users/${userUid}`).set({
+      todos: this.state.todos,
     });
   }
   getFullDate() {
@@ -78,6 +90,7 @@ class App extends React.Component {
     todos[idx].important = !todos[idx].important;
     //4.Меняем todos в state
     this.setState(todos);
+    this.pushTodosToFirebase();
   }
   //doneTodo
   doneTodo(id) {
@@ -93,6 +106,8 @@ class App extends React.Component {
     todos = [...todos.slice(0, idx), ...todos.slice(idx + 1), completedTodo];
     //4.Меняем todos в state
     this.setState({ todos });
+    //push todos to firebase
+    this.pushTodosToFirebase();
     this.state.edit && this.setState({ edit: false });
   }
   addTodo() {
@@ -103,11 +118,9 @@ class App extends React.Component {
             id: getTodoId(),
             title: "",
             text: "",
-            tags: [],
-            editMode: true,
             important: false,
             completed: false,
-            completedDate: null,
+            completedDate: "",
             dateOfCreate: shortDate,
           },
           ...this.state.todos,
@@ -117,12 +130,22 @@ class App extends React.Component {
         // используем колбэк для того, чтобы прочитать обновленный стейт и гарантировать(!) чтение this.state.todos[0].id из обновленного состояния.
         const id = this.state.todos[0].id;
         this.toggleEdit(id, "addTodo");
+        //push todos to firebase
+        this.pushTodosToFirebase();
       }
     );
   }
   // deleteTodo
   deleteTodo(id) {
-    this.setState({ todos: this.state.todos.filter((todo) => todo.id !== id) });
+    console.log(id);
+    this.setState(
+      { todos: this.state.todos.filter((todo) => todo.id !== id) },
+      () => {
+        //push todos to firebase
+        this.pushTodosToFirebase();
+      }
+    );
+
     this.state.edit && this.setState({ edit: false });
   }
   //toggleEdit
@@ -146,12 +169,18 @@ class App extends React.Component {
     const todos = [...this.state.todos];
     todos[this.state.currentEditedTodoByIdx].title = value;
     this.setState({ todos });
+    this.pushTodosToFirebase();
   }
   //updateTags
   updateTags(tag) {
     const { currentEditedTodoByIdx } = this.state;
     const todo = { ...this.state.todos[currentEditedTodoByIdx] };
-    todo.tags.push(tag);
+    if (todo.tags) {
+      todo.tags.push(tag);
+    } else {
+      todo.tags = [];
+      todo.tags.push(tag);
+    }
     this.setState({
       todos: [
         ...this.state.todos.slice(0, currentEditedTodoByIdx),
@@ -159,31 +188,38 @@ class App extends React.Component {
         ...this.state.todos.slice(currentEditedTodoByIdx + 1),
       ],
     });
+    this.pushTodosToFirebase();
   }
   //deleteTag
   deleteTag(idx) {
     const { currentEditedTodoByIdx } = this.state;
     const todo = { ...this.state.todos[currentEditedTodoByIdx] };
     const tags = todo.tags.filter((tag, index) => index !== idx);
-    this.setState({
-      todos: [
-        ...this.state.todos.slice(0, currentEditedTodoByIdx),
-        { ...todo, tags },
-        ...this.state.todos.slice(currentEditedTodoByIdx + 1),
-      ],
-    });
+    this.setState(
+      {
+        todos: [
+          ...this.state.todos.slice(0, currentEditedTodoByIdx),
+          { ...todo, tags },
+          ...this.state.todos.slice(currentEditedTodoByIdx + 1),
+        ],
+      },
+      () => this.pushTodosToFirebase()
+    );
   }
   //updateTextarea
   updateTextarea(text) {
     const { currentEditedTodoByIdx } = this.state;
     const todo = { ...this.state.todos[currentEditedTodoByIdx] };
-    this.setState({
-      todos: [
-        ...this.state.todos.slice(0, currentEditedTodoByIdx),
-        { ...todo, text },
-        ...this.state.todos.slice(currentEditedTodoByIdx + 1),
-      ],
-    });
+    this.setState(
+      {
+        todos: [
+          ...this.state.todos.slice(0, currentEditedTodoByIdx),
+          { ...todo, text },
+          ...this.state.todos.slice(currentEditedTodoByIdx + 1),
+        ],
+      },
+      () => this.pushTodosToFirebase()
+    );
   }
   //closeTodoSide
   closeTodoSide() {
@@ -239,12 +275,16 @@ class App extends React.Component {
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
-        console.log(userCredential.user);
+        const user = userCredential.user;
+        user.updateProfile({
+          displayName: this.state.username,
+        });
       });
   };
   handleSignIn = (e) => {
-    const { email, password } = this.state;
     e.preventDefault();
+    const { email, password } = this.state;
+    this.setState({ todos: [] });
     fireApp
       .auth()
       .signInWithEmailAndPassword(email, password)
@@ -275,7 +315,13 @@ class App extends React.Component {
   };
   handleLogout = () => {
     fireApp.auth().signOut();
-    this.setState({ username: "", email: "", password: "", isAuth: false });
+    this.setState({
+      username: "",
+      email: "",
+      password: "",
+      isAuth: false,
+      // todos: [],
+    });
   };
   render() {
     const {
@@ -285,6 +331,7 @@ class App extends React.Component {
       username,
       email,
       password,
+      isLoading,
     } = this.state;
 
     const todoSide = this.state.edit && (
@@ -302,12 +349,17 @@ class App extends React.Component {
     );
     return (
       <div className="app">
-        <TodoHeader isAuth={isAuth} handleLogout={this.handleLogout} />
+        <TodoHeader
+          isAuth={isAuth}
+          handleLogout={this.handleLogout}
+          email={email}
+        />
         <main className="main">
           <TodoMenu />
           {isAuth ? (
             <TodoContent
               state={this.state}
+              isLoading={isLoading}
               toggleImportant={this.toggleImportant}
               doneTodo={this.doneTodo}
               addTodo={this.addTodo}

@@ -12,15 +12,18 @@ const TodoInputs = ({
   activeSortInput,
   switchName,
 }) => {
-
-  
-  
   return (
     <div className={styles.inputs}>
-      <TodoFilter filteredTodos={filteredTodos} filterRequest={filterRequest} />
-      <Button variant="contained" className={styles.add} onClick={addTodo}>
-        +
-      </Button>
+      <div className={styles.wrapper}>
+        <TodoFilter
+          filteredTodos={filteredTodos}
+          filterRequest={filterRequest}
+        />
+        <Button variant="contained" className={styles.add} onClick={addTodo}>
+          +
+        </Button>
+      </div>
+
       <TodoSort
         activeSortInput={activeSortInput}
         switchName={switchName}

@@ -128,12 +128,8 @@ const TodoSide = ({
         </div>
         <div className={styles.added}>
           <span className="dateAddedText">
-            Создано:{" "}
-            {
-              todo.dateOfCreate
-                ? todo.dateOfCreate
-                : shortDate /* потом поменять */
-            }
+            Создано:
+            {todo.dateOfCreate}
           </span>
         </div>
         <div className={styles.delete} onClick={() => deleteTodo(todo.id)}>

@@ -28,6 +28,7 @@
 .bell {
   transform-origin: top;
   transition: transform 0.3s;
+  margin-left: 10px;
 }
 .bell:hover {
   transform: rotate(30deg);
@@ -38,4 +39,10 @@
 }
 .settings:hover {
   transform: rotate(100deg);
+}
+
+@media screen and (max-width:414px){
+  .header{
+    padding: 0 15px;
+  }
 }

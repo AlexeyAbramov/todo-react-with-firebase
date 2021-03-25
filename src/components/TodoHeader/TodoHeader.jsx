@@ -1,9 +1,10 @@
 import styles from "./TodoHeader.module.css";
 
-const TodoHeader = ({ isAuth, handleLogout }) => {
+const TodoHeader = ({ isAuth, email, handleLogout }) => {
   return (
     <header className={styles.header}>
       <div className={styles.buttons}>
+        {isAuth && <span className={styles.email}>{email}</span>}
         <button
           className={`${styles.bell} ${styles.button}`}
           style={{

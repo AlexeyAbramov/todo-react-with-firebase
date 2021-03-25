@@ -5,3 +5,10 @@
   font-size: 40px;
   line-height: 120%;
 }
+
+@media screen and (max-width:414px){
+  .text{
+    text-align: center;
+    font-size: 30px;
+  }
+}

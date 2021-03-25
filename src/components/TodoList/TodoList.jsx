@@ -32,7 +32,14 @@ const TodoList = (props) => {
           />
         ))}
       </ul>
-      {!todos.length && <span>Добавьте задачу</span>}
+      {props.isLoading && (
+        <div className={styles.loading}>
+          <img src="images/loading.gif" alt="loading__icon" />
+        </div>
+      )}
+      {!todos.length && !props.isLoading && (
+        <span className={styles.recommend}>Добавьте задачу</span>
+      )}
     </div>
   );
 };

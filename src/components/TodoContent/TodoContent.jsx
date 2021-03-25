@@ -9,6 +9,7 @@ const TodoContent = (props) => {
       <TodoTitle />
       <TodoList
         state={props.state}
+        isLoading={props.isLoading}
         toggleImportant={props.toggleImportant}
         doneTodo={props.doneTodo}
         addTodo={props.addTodo}
