@@ -1,0 +1,12 @@
+.button {
+  font-weight: bold !important;
+  background-color: #fff !important;
+}
+.active {
+  background-color: #000 !important;
+  color: #fff !important;
+  border: 1px solid #000 !important;
+}
+.sup{
+    
+}

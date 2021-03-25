@@ -1,0 +1,85 @@
+.item {
+  border-radius: 10px;
+  padding: 8px 12px;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  display: flex;
+  cursor: pointer;
+  overflow: hidden;
+}
+.item + .item {
+  margin-top: 12px;
+}
+.status {
+  margin-top: 7px;
+}
+.bar {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+.title {
+  font-size: 20px;
+  border-radius: 4px;
+  padding: 0 5px;
+}
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 0;
+  margin-top: 6px;
+}
+.tag {
+  background-color: #c4c4c4;
+  border-radius: 3px;
+  padding: 0 7px;
+}
+.bottom {
+  position: relative;
+}
+.line {
+  width: 200%;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.1);
+  position: absolute;
+  left: -34px;
+  top: -8px;
+}
+.text {
+  margin-top: 18px;
+}
+.main {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 10px;
+  width: 100%;
+}
+.content {
+  width: inherit;
+}
+.edit {
+  width: 24px;
+  transition: .4s;
+}
+.edit:hover {
+  background-color: #f6a33c;
+  border-radius: 3px;
+}
+.settings {
+  display: flex;
+}
+.setting {
+  width: 24px;
+  height: 24px;
+}
+.setting + .setting {
+  margin-left: 8px;
+}
+.important {
+  margin-top: 1px;
+}
+.date {
+  width: 178px;
+  margin-top: 8px;
+  font-size: 12px;
+}

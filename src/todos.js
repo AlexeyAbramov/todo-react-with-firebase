@@ -1,0 +1,53 @@
+export const todos = [
+  {
+    id: 1,
+    title: "Задача-1",
+    text: "1",
+    tags: ["важно", "магазин"],
+    editMode: false,
+    important: false,
+    completed: false,
+    completedDate: null,
+    dateOfUpdate: null,
+    dateOfCreate: null,
+  },
+  {
+    id: 2,
+    title: "Задача-2",
+    text:
+      'Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века. В то время некий безымянный печатник создал большую коллекцию размеров и форм шрифтов, используя Lorem Ipsum для распечатки образцов.',
+    tags: ["важно", "магазин", "встреча", "еще тег"],
+    editMode: false,
+    important: false,
+    completed: false,
+    completedDate: null,
+    dateOfUpdate: null,
+    dateOfCreate: null,
+  },
+  {
+    id: 3,
+    title: "Три",
+    text:
+      'Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века. В то время некий безымянный печатник создал большую коллекцию размеров и форм шрифтов, используя Lorem Ipsum для распечатки образцов.',
+    tags: ["важно", "магазин"],
+    editMode: false,
+    important: false,
+    completed: false,
+    completedDate: null,
+    dateOfUpdate: null,
+    dateOfCreate: null,
+  },
+  {
+    id: 4,
+    title: "Задача-4",
+    text:
+      'Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века. В то время некий безымянный печатник создал большую коллекцию размеров и форм шрифтов, используя Lorem Ipsum для распечатки образцов.',
+    tags: ["важно", "магазин"],
+    editMode: false,
+    important: false,
+    completed: false,
+    completedDate: null,
+    dateOfUpdate: null,
+    dateOfCreate: null,
+  },
+];
