@@ -293,7 +293,7 @@ class App extends React.Component {
         if (user) {
           this.setState({ isAuth: true });
         } else {
-          console.log("неа");
+          console.log("ошибка");
         }
       })
       .catch((error) => {
